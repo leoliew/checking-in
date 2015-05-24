@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+
+	<bean id="dataSource"
+		class="org.apache.commons.dbcp.BasicDataSource">
+		<property name="driverClassName"
+			value="com.mysql.jdbc.Driver">
+		</property>
+		<property name="url"
+			value="jdbc:mysql://localhost:3306/checkingin">
+		</property>
+		<property name="username" value="root"></property>
+		<property name="password" value="root"></property>
+	</bean>
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
+		<property name="dataSource">
+			<ref bean="dataSource" />
+		</property>
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">
+					org.hibernate.dialect.MySQLDialect
+				</prop>
+				<prop key="hibernate.show_sql">true</prop>
+				<prop key="hibernate.format_sql">true</prop>
+			</props>
+		</property>
+		<property name="mappingResources">
+			<list>
+				<value>com/vo/TKaoqin.hbm.xml</value>
+				<value>com/vo/SWorkgroup.hbm.xml</value>
+				<value>com/vo/SUser.hbm.xml</value>
+				<value>com/vo/SActor.hbm.xml</value></list>
+		</property></bean>
+	<bean id="TKaoqinDAO" class="com.dao.TKaoqinDAO">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<!-- daos -->
+	<bean id="SWorkgroupDAO" class="com.dao.SWorkgroupDAO">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<bean id="SUserDAO" class="com.dao.SUserDAO">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<bean id="SActorDAO" class="com.dao.SActorDAO">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	
+	<!-- bizs -->
+	<bean id="userBiz" class="com.biz.UserBiz">
+		<property name="userDAO" ref="SUserDAO"></property>
+	</bean>
+	<bean  id="kaoqinBiz" class="com.biz.KaoqinBiz">
+	<property name="kaoqinDAO" ref="TKaoqinDAO"></property>
+	</bean>
+	
+	<!-- actions -->
+	<bean id="userAction" class="com.action.UserAction" scope="prototype">
+		<property name="userBiz" ref="userBiz"></property>
+		<property name="kaoqinBiz" ref="kaoqinBiz"></property>
+	</bean>
+	
+	<bean id="kaoqinAction" class="com.action.KaoqinAction" scope="prototype">
+		<property name="kaoqinBiz" ref="kaoqinBiz"></property>
+	</bean>
+	</beans>

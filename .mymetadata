@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-module
+  type="WEB"
+  name="checking-in"
+  id="myeclipse.1348278823059"
+  context-root="/checking-in"
+  j2ee-spec="6.0"
+  archive="checking-in.war">
+  <attributes>
+    <attribute name="webrootdir" value="WebRoot" />
+  </attributes>
+</project-module>
+
